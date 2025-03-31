@@ -33,12 +33,12 @@ const Dashboard = () => {
     isLoading 
   } = useDashboardData(timeRange);
 
-  // Set up SSE connection for real-time updates
+  // Configuração da conexão SSE para atualizações em tempo real
   useEffect(() => {
     const eventSource = new EventSource("/api/events");
     
     eventSource.addEventListener("connected", (e) => {
-      console.log("SSE connected:", JSON.parse(e.data));
+      console.log("SSE conectado:", JSON.parse(e.data));
     });
     
     eventSource.addEventListener("metrics-update", (e) => {
@@ -48,7 +48,7 @@ const Dashboard = () => {
     });
     
     eventSource.onerror = (error) => {
-      console.error("SSE error:", error);
+      console.error("Erro SSE:", error);
       eventSource.close();
     };
     
@@ -62,18 +62,18 @@ const Dashboard = () => {
       setIsRefreshing(true);
       await apiRequest("POST", "/api/refresh", { timeRange });
       
-      // Invalidate all queries to refresh data
+      // Invalidar todas as consultas para atualizar os dados
       await queryClient.invalidateQueries();
       
       setLastUpdated(new Date().toLocaleTimeString());
       toast({
-        title: "Dashboard refreshed",
-        description: "All data has been updated with the latest information.",
+        title: "Painel atualizado",
+        description: "Todos os dados foram atualizados com as informações mais recentes.",
       });
     } catch (error) {
       toast({
-        title: "Refresh failed",
-        description: "There was an error refreshing the dashboard data.",
+        title: "Falha na atualização",
+        description: "Ocorreu um erro ao atualizar os dados do painel.",
         variant: "destructive",
       });
     } finally {
@@ -94,12 +94,12 @@ const Dashboard = () => {
     setIsDarkMode(!isDarkMode);
   };
 
-  // Convert active users to formatted number
+  // Converte usuários ativos para número formatado
   const formatMetricValue = (value: number) => {
-    return new Intl.NumberFormat().format(value);
+    return new Intl.NumberFormat('pt-BR').format(value);
   };
 
-  // Convert seconds to minutes and seconds
+  // Converte segundos para minutos e segundos
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -108,14 +108,14 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-700 dark:bg-slate-900 dark:text-slate-200">
-      {/* Header */}
+      {/* Cabeçalho */}
       <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-10">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <h1 className="text-xl font-semibold text-slate-800 dark:text-slate-100">Analytics Dashboard</h1>
+            <h1 className="text-xl font-semibold text-slate-800 dark:text-slate-100">Visão 360° - Painel Inteligente</h1>
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100">
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse mr-1.5"></span>
-              Live
+              Ao vivo
             </span>
           </div>
           
@@ -147,13 +147,13 @@ const Dashboard = () => {
         </div>
       </header>
 
-      {/* Main Content */}
+      {/* Conteúdo Principal */}
       <main className="flex-grow py-6 px-4">
         <div className="container mx-auto">
-          {/* Status Cards */}
+          {/* Cartões de Status */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <StatusCard
-              title="Active Users"
+              title="Usuários Ativos"
               value={metrics?.activeUsers ? formatMetricValue(metrics.activeUsers) : "--"}
               change={12}
               trend="up"
@@ -163,7 +163,7 @@ const Dashboard = () => {
             />
             
             <StatusCard
-              title="Page Views"
+              title="Visualizações"
               value={metrics?.pageViews ? formatMetricValue(metrics.pageViews) : "--"}
               change={8.3}
               trend="up"
@@ -173,7 +173,7 @@ const Dashboard = () => {
             />
             
             <StatusCard
-              title="Conversion Rate"
+              title="Taxa de Conversão"
               value={metrics?.conversionRate ? `${metrics.conversionRate}%` : "--"}
               change={1.8}
               trend="down"
@@ -183,7 +183,7 @@ const Dashboard = () => {
             />
             
             <StatusCard
-              title="Avg. Session"
+              title="Sessão Média"
               value={metrics?.avgSessionDuration ? formatTime(metrics.avgSessionDuration) : "--"}
               change={0.5}
               trend="up"
@@ -193,10 +193,10 @@ const Dashboard = () => {
             />
           </div>
 
-          {/* Main Charts */}
+          {/* Gráficos Principais */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
             <ChartCard
-              title="Traffic Overview"
+              title="Visão Geral de Tráfego"
               className="lg:col-span-2"
               type="line"
               data={trafficData}
@@ -204,61 +204,61 @@ const Dashboard = () => {
             />
             
             <ChartCard
-              title="User Demographics"
+              title="Demografia de Usuários"
               type="bar"
               data={demographicsData}
             />
           </div>
 
-          {/* Secondary Charts */}
+          {/* Gráficos Secundários */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
             <ChartCard
-              title="Device Usage"
+              title="Uso por Dispositivo"
               type="doughnut"
               data={deviceUsage}
               height={250}
             />
             
             <ChartCard
-              title="Conversion Funnel"
+              title="Funil de Conversão"
               type="horizontalBar"
               data={conversionFunnel}
               height={250}
             />
             
             <ChartCard
-              title="Page Load Time"
+              title="Tempo de Carregamento"
               type="line"
               data={performanceData}
               height={250}
             />
           </div>
 
-          {/* Data Table */}
+          {/* Tabela de Dados */}
           <DataTable
-            title="Top Pages"
+            title="Páginas Principais"
             data={pageAnalytics || []}
           />
         </div>
       </main>
 
-      {/* Footer */}
+      {/* Rodapé */}
       <footer className="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 py-4">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-sm text-slate-500 dark:text-slate-400">
-              © 2023 Dashboard Analytics. All rights reserved.
+              © 2023 Visão 360° - Painel Inteligente. Todos os direitos reservados.
             </div>
             <div className="mt-4 md:mt-0">
-              <p className="text-sm text-slate-500 dark:text-slate-400">Last updated: <span>{lastUpdated}</span></p>
+              <p className="text-sm text-slate-500 dark:text-slate-400">Última atualização: <span>{lastUpdated}</span></p>
             </div>
           </div>
         </div>
       </footer>
 
-      {/* Loading Overlay */}
-      {isLoading && <LoadingOverlay message="Loading dashboard data..." />}
-      {isRefreshing && <LoadingOverlay message="Updating dashboard..." />}
+      {/* Overlay de Carregamento */}
+      {isLoading && <LoadingOverlay message="Carregando dados do painel..." />}
+      {isRefreshing && <LoadingOverlay message="Atualizando painel..." />}
     </div>
   );
 };

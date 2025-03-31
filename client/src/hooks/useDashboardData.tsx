@@ -13,49 +13,49 @@ import {
 export function useDashboardData(timeRange: string = "24h") {
   const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch metrics based on timeRange
+  // Buscar métricas com base no intervalo de tempo
   const { data: metrics } = useQuery<Metrics>({
     queryKey: ['/api/metrics', timeRange],
-    refetchInterval: 30000, // Refetch every 30 seconds
+    refetchInterval: 30000, // Atualizar a cada 30 segundos
   });
 
-  // Fetch page analytics
+  // Buscar análise de páginas
   const { data: pageAnalytics } = useQuery<PageAnalytics[]>({
     queryKey: ['/api/page-analytics'],
     refetchInterval: 30000,
   });
 
-  // Fetch device usage
+  // Buscar uso por dispositivo
   const { data: deviceUsageRaw } = useQuery<DeviceUsage>({
     queryKey: ['/api/device-usage'],
     refetchInterval: 30000,
   });
 
-  // Fetch traffic data
+  // Buscar dados de tráfego
   const { data: trafficDataRaw } = useQuery<TrafficData[]>({
     queryKey: ['/api/traffic-data'],
     refetchInterval: 30000,
   });
 
-  // Fetch demographics data
+  // Buscar dados demográficos
   const { data: demographicsDataRaw } = useQuery<DemographicsData[]>({
     queryKey: ['/api/demographics-data'],
     refetchInterval: 30000,
   });
 
-  // Fetch conversion funnel
+  // Buscar funil de conversão
   const { data: conversionFunnelRaw } = useQuery<ConversionFunnel[]>({
     queryKey: ['/api/conversion-funnel'],
     refetchInterval: 30000,
   });
 
-  // Fetch performance data
+  // Buscar dados de desempenho
   const { data: performanceDataRaw } = useQuery<PerformanceData[]>({
     queryKey: ['/api/performance-data'],
     refetchInterval: 30000,
   });
 
-  // Process device usage data for chart.js
+  // Processar dados de uso por dispositivo para chart.js
   const deviceUsage = deviceUsageRaw ? {
     labels: ['Desktop', 'Mobile', 'Tablet'],
     datasets: [{
@@ -66,12 +66,12 @@ export function useDashboardData(timeRange: string = "24h") {
     }]
   } : null;
 
-  // Process traffic data for chart.js
+  // Processar dados de tráfego para chart.js
   const trafficData = trafficDataRaw ? {
     labels: trafficDataRaw.map(item => item.label),
     datasets: [
       {
-        label: 'Current Period',
+        label: 'Período Atual',
         data: trafficDataRaw.map(item => item.current),
         borderColor: '#2563eb',
         backgroundColor: 'rgba(37, 99, 235, 0.1)',
@@ -82,7 +82,7 @@ export function useDashboardData(timeRange: string = "24h") {
         pointHoverRadius: 5
       },
       {
-        label: 'Previous Period',
+        label: 'Período Anterior',
         data: trafficDataRaw.map(item => item.previous),
         borderColor: '#64748b',
         borderDash: [5, 5],
@@ -95,19 +95,19 @@ export function useDashboardData(timeRange: string = "24h") {
     ]
   } : null;
 
-  // Process demographics data for chart.js
+  // Processar dados demográficos para chart.js
   const demographicsData = demographicsDataRaw ? {
     labels: demographicsDataRaw.map(item => item.ageGroup),
     datasets: [
       {
-        label: 'Male',
+        label: 'Masculino',
         data: demographicsDataRaw.map(item => item.male),
         backgroundColor: '#2563eb',
         barPercentage: 0.6,
         categoryPercentage: 0.5
       },
       {
-        label: 'Female',
+        label: 'Feminino',
         data: demographicsDataRaw.map(item => item.female),
         backgroundColor: '#7c3aed',
         barPercentage: 0.6,
@@ -116,11 +116,11 @@ export function useDashboardData(timeRange: string = "24h") {
     ]
   } : null;
 
-  // Process conversion funnel data for chart.js
+  // Processar dados do funil de conversão para chart.js
   const conversionFunnel = conversionFunnelRaw ? {
     labels: conversionFunnelRaw.map(item => item.stage),
     datasets: [{
-      label: 'Conversion Steps',
+      label: 'Etapas de Conversão',
       data: conversionFunnelRaw.map(item => item.value),
       backgroundColor: [
         '#94a3b8', 
@@ -134,11 +134,11 @@ export function useDashboardData(timeRange: string = "24h") {
     }]
   } : null;
 
-  // Process performance data for chart.js
+  // Processar dados de desempenho para chart.js
   const performanceData = performanceDataRaw ? {
     labels: performanceDataRaw.map(item => item.day),
     datasets: [{
-      label: 'Page Load (ms)',
+      label: 'Tempo de Carregamento (ms)',
       data: performanceDataRaw.map(item => item.loadTime),
       borderColor: '#ef4444',
       backgroundColor: 'rgba(239, 68, 68, 0.1)',
@@ -150,7 +150,7 @@ export function useDashboardData(timeRange: string = "24h") {
     }]
   } : null;
 
-  // Determine overall loading state
+  // Determinar estado de carregamento geral
   useEffect(() => {
     if (
       metrics &&

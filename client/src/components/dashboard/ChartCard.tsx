@@ -28,18 +28,18 @@ const ChartCard = ({
   useEffect(() => {
     if (!canvasRef.current || !data) return;
 
-    // Clean up previous chart instance
+    // Limpar instância anterior do gráfico
     if (chartRef.current) {
       chartRef.current.destroy();
     }
 
-    // Create new chart
+    // Criar novo gráfico
     const ctx = canvasRef.current.getContext("2d");
     if (ctx) {
       chartRef.current = createChart(ctx, type, data, activeFilter);
     }
 
-    // Clean up on unmount
+    // Limpar ao desmontar
     return () => {
       if (chartRef.current) {
         chartRef.current.destroy();
@@ -70,7 +70,7 @@ const ChartCard = ({
                 }`}
                 onClick={() => handleFilterChange("daily")}
               >
-                Daily
+                Diário
               </Button>
               <Button
                 variant={activeFilter === "weekly" ? "default" : "ghost"}
@@ -82,7 +82,7 @@ const ChartCard = ({
                 }`}
                 onClick={() => handleFilterChange("weekly")}
               >
-                Weekly
+                Semanal
               </Button>
               <Button
                 variant={activeFilter === "monthly" ? "default" : "ghost"}
@@ -94,7 +94,7 @@ const ChartCard = ({
                 }`}
                 onClick={() => handleFilterChange("monthly")}
               >
-                Monthly
+                Mensal
               </Button>
             </div>
           </div>
@@ -110,7 +110,7 @@ const ChartCard = ({
             <canvas ref={canvasRef} />
           ) : (
             <div className="flex h-full items-center justify-center text-slate-400 dark:text-slate-500">
-              Loading data...
+              Carregando dados...
             </div>
           )}
         </div>

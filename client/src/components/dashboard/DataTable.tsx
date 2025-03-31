@@ -23,19 +23,19 @@ const DataTable = ({ title, data }: DataTableProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5;
 
-  // Filter data based on search term
+  // Filtrar dados com base no termo de pesquisa
   const filteredData = searchTerm
     ? data.filter((item) =>
         item.pagePath.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : data;
 
-  // Paginate data
+  // Paginar dados
   const startIndex = (currentPage - 1) * rowsPerPage;
   const paginatedData = filteredData.slice(startIndex, startIndex + rowsPerPage);
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
 
-  // Format seconds to minutes and seconds
+  // Formatar segundos para minutos e segundos
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -51,7 +51,7 @@ const DataTable = ({ title, data }: DataTableProps) => {
         <div className="relative">
           <Input
             type="text"
-            placeholder="Search pages..."
+            placeholder="Buscar páginas..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-9 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/30 dark:bg-slate-800 dark:border-slate-700"
@@ -66,19 +66,19 @@ const DataTable = ({ title, data }: DataTableProps) => {
           <TableHeader className="bg-slate-50 dark:bg-slate-800">
             <TableRow>
               <TableHead className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                Page
+                Página
               </TableHead>
               <TableHead className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                Views
+                Visualizações
               </TableHead>
               <TableHead className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                Unique
+                Únicas
               </TableHead>
               <TableHead className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                Bounce Rate
+                Taxa de Saída
               </TableHead>
               <TableHead className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                Avg. Time
+                Tempo Médio
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -89,10 +89,10 @@ const DataTable = ({ title, data }: DataTableProps) => {
                   {row.pagePath}
                 </TableCell>
                 <TableCell className="text-sm text-slate-600 dark:text-slate-300">
-                  {new Intl.NumberFormat().format(row.views)}
+                  {new Intl.NumberFormat('pt-BR').format(row.views)}
                 </TableCell>
                 <TableCell className="text-sm text-slate-600 dark:text-slate-300">
-                  {new Intl.NumberFormat().format(row.uniqueViews)}
+                  {new Intl.NumberFormat('pt-BR').format(row.uniqueViews)}
                 </TableCell>
                 <TableCell className="text-sm text-slate-600 dark:text-slate-300">
                   {row.bounceRate}%
@@ -105,7 +105,7 @@ const DataTable = ({ title, data }: DataTableProps) => {
             {paginatedData.length === 0 && (
               <TableRow>
                 <TableCell colSpan={5} className="text-center py-4 text-slate-500 dark:text-slate-400">
-                  No data found
+                  Nenhum dado encontrado
                 </TableCell>
               </TableRow>
             )}
@@ -115,11 +115,11 @@ const DataTable = ({ title, data }: DataTableProps) => {
       <div className="px-6 py-3 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm">
         <div className="flex items-center justify-between">
           <div className="text-slate-600 dark:text-slate-300">
-            Showing <span className="font-medium">{startIndex + 1}</span> to{" "}
+            Mostrando <span className="font-medium">{startIndex + 1}</span> a{" "}
             <span className="font-medium">
               {Math.min(startIndex + rowsPerPage, filteredData.length)}
             </span>{" "}
-            of <span className="font-medium">{filteredData.length}</span> results
+            de <span className="font-medium">{filteredData.length}</span> resultados
           </div>
           <div className="flex gap-2">
             <Button
@@ -128,7 +128,7 @@ const DataTable = ({ title, data }: DataTableProps) => {
               disabled={currentPage === 1}
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             >
-              Previous
+              Anterior
             </Button>
             <Button
               variant="outline"
@@ -136,7 +136,7 @@ const DataTable = ({ title, data }: DataTableProps) => {
               disabled={currentPage === totalPages || totalPages === 0}
               onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
             >
-              Next
+              Próximo
             </Button>
           </div>
         </div>

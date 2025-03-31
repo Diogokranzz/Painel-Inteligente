@@ -17,42 +17,42 @@ import {
   InsertPerformanceData
 } from "@shared/schema";
 
-// Interface for all storage operations
+// Interface para todas as operações de armazenamento
 export interface IStorage {
-  // User operations
+  // Operações de usuário
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
 
-  // Dashboard metrics operations
+  // Operações de métricas do painel
   getLatestMetrics(timeRange: string): Promise<Metrics | undefined>;
   createMetrics(metrics: InsertMetrics): Promise<Metrics>;
   
-  // Page analytics operations
+  // Operações de análise de páginas
   getAllPageAnalytics(): Promise<PageAnalytics[]>;
   createPageAnalytics(pageAnalytics: InsertPageAnalytics): Promise<PageAnalytics>;
   
-  // Device usage operations
+  // Operações de uso por dispositivo
   getLatestDeviceUsage(): Promise<DeviceUsage | undefined>;
   createDeviceUsage(deviceUsage: InsertDeviceUsage): Promise<DeviceUsage>;
   
-  // Traffic data operations
+  // Operações de dados de tráfego
   getAllTrafficData(): Promise<TrafficData[]>;
   createTrafficData(trafficData: InsertTrafficData): Promise<TrafficData>;
   
-  // Demographics data operations
+  // Operações de dados demográficos
   getAllDemographicsData(): Promise<DemographicsData[]>;
   createDemographicsData(demographicsData: InsertDemographicsData): Promise<DemographicsData>;
   
-  // Conversion funnel operations
+  // Operações de funil de conversão
   getAllConversionFunnel(): Promise<ConversionFunnel[]>;
   createConversionFunnel(conversionFunnel: InsertConversionFunnel): Promise<ConversionFunnel>;
   
-  // Performance data operations
+  // Operações de dados de desempenho
   getAllPerformanceData(): Promise<PerformanceData[]>;
   createPerformanceData(performanceData: InsertPerformanceData): Promise<PerformanceData>;
 
-  // Additional methods for dashboard updates
+  // Métodos adicionais para atualizações do painel
   generateRandomMetricsUpdate(timeRange: string): Promise<Metrics>;
 }
 
@@ -94,11 +94,11 @@ export class MemStorage implements IStorage {
     this.currentConversionFunnelId = 1;
     this.currentPerformanceDataId = 1;
     
-    // Initialize with sample data
+    // Inicializar com dados de exemplo
     this.initializeData();
   }
 
-  // User methods
+  // Métodos de usuário
   async getUser(id: number): Promise<User | undefined> {
     return this.users.get(id);
   }
@@ -116,7 +116,7 @@ export class MemStorage implements IStorage {
     return user;
   }
 
-  // Dashboard metrics methods
+  // Métodos de métricas do painel
   async getLatestMetrics(timeRange: string): Promise<Metrics | undefined> {
     const allMetrics = Array.from(this.metrics.values());
     return allMetrics
@@ -131,7 +131,7 @@ export class MemStorage implements IStorage {
     return metrics;
   }
 
-  // Page analytics methods
+  // Métodos de análise de páginas
   async getAllPageAnalytics(): Promise<PageAnalytics[]> {
     return Array.from(this.pageAnalytics.values())
       .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
@@ -144,7 +144,7 @@ export class MemStorage implements IStorage {
     return pageAnalytics;
   }
 
-  // Device usage methods
+  // Métodos de uso por dispositivo
   async getLatestDeviceUsage(): Promise<DeviceUsage | undefined> {
     const allDeviceUsage = Array.from(this.deviceUsage.values());
     return allDeviceUsage.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())[0];
@@ -157,10 +157,10 @@ export class MemStorage implements IStorage {
     return deviceUsage;
   }
 
-  // Traffic data methods
+  // Métodos de dados de tráfego
   async getAllTrafficData(): Promise<TrafficData[]> {
     return Array.from(this.trafficData.values())
-      .sort((a, b) => a.id - b.id); // Sort by ID to maintain order
+      .sort((a, b) => a.id - b.id); // Ordenar por ID para manter a ordem
   }
 
   async createTrafficData(insertTrafficData: InsertTrafficData): Promise<TrafficData> {
@@ -170,10 +170,10 @@ export class MemStorage implements IStorage {
     return trafficData;
   }
 
-  // Demographics data methods
+  // Métodos de dados demográficos
   async getAllDemographicsData(): Promise<DemographicsData[]> {
     return Array.from(this.demographicsData.values())
-      .sort((a, b) => a.id - b.id); // Sort by ID to maintain order
+      .sort((a, b) => a.id - b.id); // Ordenar por ID para manter a ordem
   }
 
   async createDemographicsData(insertDemographicsData: InsertDemographicsData): Promise<DemographicsData> {
@@ -183,10 +183,10 @@ export class MemStorage implements IStorage {
     return demographicsData;
   }
 
-  // Conversion funnel methods
+  // Métodos de funil de conversão
   async getAllConversionFunnel(): Promise<ConversionFunnel[]> {
     return Array.from(this.conversionFunnel.values())
-      .sort((a, b) => a.id - b.id); // Sort by ID to maintain order
+      .sort((a, b) => a.id - b.id); // Ordenar por ID para manter a ordem
   }
 
   async createConversionFunnel(insertConversionFunnel: InsertConversionFunnel): Promise<ConversionFunnel> {
@@ -196,10 +196,10 @@ export class MemStorage implements IStorage {
     return conversionFunnel;
   }
 
-  // Performance data methods
+  // Métodos de dados de desempenho
   async getAllPerformanceData(): Promise<PerformanceData[]> {
     return Array.from(this.performanceData.values())
-      .sort((a, b) => a.id - b.id); // Sort by ID to maintain order
+      .sort((a, b) => a.id - b.id); // Ordenar por ID para manter a ordem
   }
 
   async createPerformanceData(insertPerformanceData: InsertPerformanceData): Promise<PerformanceData> {
@@ -209,7 +209,7 @@ export class MemStorage implements IStorage {
     return performanceData;
   }
 
-  // Method to generate random metrics updates for real-time data
+  // Método para gerar atualizações aleatórias de métricas para dados em tempo real
   async generateRandomMetricsUpdate(timeRange: string): Promise<Metrics> {
     const lastMetrics = await this.getLatestMetrics(timeRange);
     let baseActiveUsers = 1200;
@@ -224,7 +224,7 @@ export class MemStorage implements IStorage {
       baseAvgSessionDuration = Number(lastMetrics.avgSessionDuration);
     }
     
-    // Generate random fluctuations
+    // Gerar flutuações aleatórias
     const activeUsers = Math.max(500, baseActiveUsers + Math.floor((Math.random() - 0.5) * 100));
     const pageViews = Math.max(5000, basePageViews + Math.floor((Math.random() - 0.5) * 1000));
     const conversionRate = Math.max(0.5, Number(baseConversionRate) + (Math.random() - 0.5) * 0.2);
@@ -242,9 +242,9 @@ export class MemStorage implements IStorage {
     return this.createMetrics(updatedMetrics);
   }
   
-  // Initialize with realistic data
+  // Inicializar com dados realistas
   private initializeData() {
-    // Initial metrics for different time ranges
+    // Métricas iniciais para diferentes intervalos de tempo
     const timeRanges = ["1h", "6h", "24h", "7d", "30d"];
     timeRanges.forEach(range => {
       this.createMetrics({
@@ -257,7 +257,7 @@ export class MemStorage implements IStorage {
       });
     });
     
-    // Initial page analytics
+    // Análise inicial de páginas
     const pageData = [
       {
         pagePath: "/home",
@@ -303,7 +303,7 @@ export class MemStorage implements IStorage {
       });
     });
     
-    // Initial device usage
+    // Uso inicial por dispositivo
     this.createDeviceUsage({
       desktop: 45,
       mobile: 40,
@@ -311,7 +311,7 @@ export class MemStorage implements IStorage {
       timestamp: new Date(),
     });
     
-    // Initial traffic data
+    // Dados iniciais de tráfego
     const trafficLabels = ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'];
     const currentTraffic = [120, 190, 300, 510, 620, 780, 880, 730];
     const previousTraffic = [90, 150, 260, 420, 560, 680, 750, 650];
@@ -325,7 +325,7 @@ export class MemStorage implements IStorage {
       });
     });
     
-    // Initial demographics data
+    // Dados iniciais demográficos
     const ageGroups = ['18-24', '25-34', '35-44', '45-54', '55-64', '65+'];
     const maleData = [15, 30, 25, 18, 12, 8];
     const femaleData = [18, 34, 27, 15, 10, 6];
@@ -339,8 +339,8 @@ export class MemStorage implements IStorage {
       });
     });
     
-    // Initial conversion funnel
-    const funnelStages = ['Visitors', 'Product Views', 'Add to Cart', 'Checkout', 'Purchase'];
+    // Funil de conversão inicial
+    const funnelStages = ['Visitantes', 'Visualizações', 'Adição ao Carrinho', 'Checkout', 'Compra'];
     const funnelValues = [10000, 8200, 4300, 2100, 1200];
     
     funnelStages.forEach((stage, index) => {
@@ -351,8 +351,8 @@ export class MemStorage implements IStorage {
       });
     });
     
-    // Initial performance data
-    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    // Dados iniciais de desempenho
+    const days = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
     const loadTimes = [320, 380, 275, 290, 310, 260, 295];
     
     days.forEach((day, index) => {

@@ -85,7 +85,7 @@ const StatusCard = ({
               </span>
             </div>
             <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">
-              vs previous period
+              vs período anterior
             </p>
           </div>
           <div className={`p-2 rounded-full ${iconBgColor} ${iconColor}`}>

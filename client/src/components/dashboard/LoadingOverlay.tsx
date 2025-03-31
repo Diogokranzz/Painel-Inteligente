@@ -4,7 +4,7 @@ interface LoadingOverlayProps {
   message?: string;
 }
 
-const LoadingOverlay = ({ message = "Loading..." }: LoadingOverlayProps) => {
+const LoadingOverlay = ({ message = "Carregando..." }: LoadingOverlayProps) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-slate-900/50 z-50 dark:bg-slate-900/70">
       <div className="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-lg flex flex-col items-center">
